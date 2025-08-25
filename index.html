@@ -251,9 +251,10 @@
             position: relative;
         }
 
-        .video-player video {
+        .video-player iframe {
             width: 100%;
-            display: block;
+            height: 500px;
+            border: none;
         }
 
         .close-player {
@@ -331,6 +332,10 @@
                 padding: 0.4rem 0.6rem;
                 font-size: 0.8rem;
             }
+            
+            .video-player iframe {
+                height: 300px;
+            }
         }
 
         @media (max-width: 480px) {
@@ -340,6 +345,10 @@
             
             .movie-poster {
                 height: 180px;
+            }
+            
+            .video-player iframe {
+                height: 250px;
             }
         }
     </style>
@@ -382,14 +391,14 @@
     <div class="video-player-container" id="videoPlayerContainer">
         <div class="video-player">
             <button class="close-player" id="closePlayer">×</button>
-            <video controls id="videoPlayer"></video>
+            <iframe id="videoFrame" allowfullscreen></iframe>
         </div>
     </div>
 
     <button class="install-btn" id="installButton">+</button>
 
     <script>
-        // Google Sheet URL (replace with your own)
+        // Your opensheet URL
         const GOOGLE_SHEET_URL = 'https://opensheet.elk.sh/1vOt2lrRXqEnX8m9AclIAtBP67Wwn7kLqj0htmjVQWEw/movies';
         
         // App state
@@ -405,7 +414,7 @@
         const searchInput = document.getElementById('searchInput');
         const genreFilter = document.getElementById('genreFilter');
         const videoPlayerContainer = document.getElementById('videoPlayerContainer');
-        const videoPlayer = document.getElementById('videoPlayer');
+        const videoFrame = document.getElementById('videoFrame');
         const closePlayer = document.getElementById('closePlayer');
         const installButton = document.getElementById('installButton');
         const favoritesSection = document.getElementById('favoritesSection');
@@ -477,7 +486,7 @@
                         ${movie.genre && movie.genre.length > 0 ? 
                             `<div class="movie-genre">${movie.genre[0]}</div>` : ''}
                         <div class="movie-actions">
-                            <button class="btn btn-play" onclick="playMovie('${movie.fileId}', ${movie.subtitle ? `'${movie.subtitle}'` : null})">
+                            <button class="btn btn-play" onclick="playMovie('${movie.fileId}')">
                                 ▶ Play
                             </button>
                             <button class="btn btn-favorite ${favorites.includes(movie.fileId) ? 'active' : ''}" 
@@ -513,7 +522,7 @@
                         ${movie.genre && movie.genre.length > 0 ? 
                             `<div class="movie-genre">${movie.genre[0]}</div>` : ''}
                         <div class="movie-actions">
-                            <button class="btn btn-play" onclick="playMovie('${movie.fileId}', ${movie.subtitle ? `'${movie.subtitle}'` : null})">
+                            <button class="btn btn-play" onclick="playMovie('${movie.fileId}')">
                                 ▶ Play
                             </button>
                             <button class="btn btn-favorite active" onclick="toggleFavorite('${movie.fileId}')">
@@ -550,7 +559,7 @@
                         ${movie.genre && movie.genre.length > 0 ? 
                             `<div class="movie-genre">${movie.genre[0]}</div>` : ''}
                         <div class="movie-actions">
-                            <button class="btn btn-play" onclick="playMovie('${movie.fileId}', ${movie.subtitle ? `'${movie.subtitle}'` : null})">
+                            <button class="btn btn-play" onclick="playMovie('${movie.fileId}')">
                                 ▶ Play
                             </button>
                             <button class="btn btn-favorite ${favorites.includes(movie.fileId) ? 'active' : ''}" 
@@ -582,36 +591,20 @@
             });
         }
         
-        // Play a movie
-        function playMovie(fileId, subtitleUrl = null) {
+        // Play a movie using Google Drive embed iframe
+        function playMovie(fileId) {
             const movie = movies.find(m => m.fileId === fileId);
             if (!movie) return;
             
             // Add to recently played
             addToRecentlyPlayed(fileId);
             
-            // Set video source
-            const videoUrl = `https://drive.google.com/uc?export=view&id=${fileId}`;
-                        videoPlayer.src = videoUrl;
-            
-            // Add subtitles if available
-            if (subtitleUrl && isValidUrl(subtitleUrl)) {
-                // Clear existing tracks
-                Array.from(videoPlayer.textTracks).forEach(track => track.mode = 'disabled');
-                
-                // Add new track
-                const track = document.createElement('track');
-                track.kind = 'subtitles';
-                track.src = subtitleUrl;
-                track.srclang = 'en';
-                track.label = 'English';
-                videoPlayer.appendChild(track);
-                track.mode = 'showing';
-            }
+            // Set iframe source for streaming
+            const embedUrl = `https://drive.google.com/file/d/${fileId}/preview`;
+            videoFrame.src = embedUrl;
             
             // Show player
             videoPlayerContainer.classList.add('active');
-            videoPlayer.play();
         }
         
         // Add movie to recently played
@@ -673,16 +666,14 @@
             genreFilter.addEventListener('change', filterMovies);
             closePlayer.addEventListener('click', () => {
                 videoPlayerContainer.classList.remove('active');
-                videoPlayer.pause();
-                videoPlayer.src = '';
+                videoFrame.src = '';
             });
             
             // Close video player when clicking outside
             videoPlayerContainer.addEventListener('click', (e) => {
                 if (e.target === videoPlayerContainer) {
                     videoPlayerContainer.classList.remove('active');
-                    videoPlayer.pause();
-                    videoPlayer.src = '';
+                    videoFrame.src = '';
                 }
             });
             
