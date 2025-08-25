@@ -32,6 +32,9 @@
             background-color: var(--background-color);
             color: var(--text-color);
             line-height: 1.6;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
         }
 
         header {
@@ -61,6 +64,14 @@
             font-size: 1.5rem;
             font-weight: bold;
             color: var(--primary-color);
+            text-decoration: none;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .logo:hover {
+            transform: scale(1.05);
+            color: #f40612;
         }
 
         .search-container {
@@ -101,6 +112,7 @@
             max-width: 1200px;
             margin: 2rem auto;
             padding: 0 1rem;
+            flex: 1;
         }
 
         .section-title {
@@ -280,7 +292,7 @@
 
         .install-btn {
             position: fixed;
-            bottom: 20px;
+            bottom: 80px;
             right: 20px;
             background-color: var(--primary-color);
             color: white;
@@ -293,6 +305,110 @@
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
             z-index: 99;
             display: none;
+        }
+
+        /* Beautiful Footer Styles */
+        footer {
+            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+            padding: 1.5rem 0;
+            margin-top: auto;
+            border-top: 3px solid var(--primary-color);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
+            text-align: center;
+        }
+
+        .marquee-container {
+            overflow: hidden;
+            position: relative;
+            background: linear-gradient(90deg, transparent, rgba(229, 9, 20, 0.3), transparent);
+            padding: 15px 0;
+            margin-bottom: 1rem;
+            border-radius: 10px;
+        }
+
+        .marquee {
+            display: flex;
+            animation: marquee-scroll 20s linear infinite;
+            white-space: nowrap;
+        }
+
+        .marquee-text {
+            font-size: 1.1rem;
+            font-weight: bold;
+            color: #fff;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+            padding: 0 2rem;
+        }
+
+        .marquee-text span {
+            color: var(--primary-color);
+            font-weight: 800;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            flex-wrap: wrap;
+            margin-top: 1rem;
+        }
+
+        .footer-link {
+            color: #ccc;
+            text-decoration: none;
+            transition: var(--transition);
+            font-size: 0.9rem;
+        }
+
+        .footer-link:hover {
+            color: var(--primary-color);
+            transform: translateY(-2px);
+        }
+
+        .copyright {
+            margin-top: 1rem;
+            color: #888;
+            font-size: 0.8rem;
+        }
+
+        /* Marquee animation */
+        @keyframes marquee-scroll {
+            0% {
+                transform: translateX(100%);
+            }
+            100% {
+                transform: translateX(-100%);
+            }
+        }
+
+        /* Pause animation on hover */
+        .marquee-container:hover .marquee {
+            animation-play-state: paused;
+        }
+
+        /* Decorative elements */
+        .footer-decoration {
+            position: absolute;
+            opacity: 0.1;
+        }
+
+        .footer-decoration-1 {
+            top: 10px;
+            left: 5%;
+            font-size: 2rem;
+        }
+
+        .footer-decoration-2 {
+            bottom: 10px;
+            right: 5%;
+            font-size: 2rem;
         }
 
         @media (max-width: 768px) {
@@ -336,6 +452,14 @@
             .video-player iframe {
                 height: 300px;
             }
+            
+            .footer-links {
+                gap: 1rem;
+            }
+            
+            .marquee-text {
+                font-size: 1rem;
+            }
         }
 
         @media (max-width: 480px) {
@@ -350,13 +474,22 @@
             .video-player iframe {
                 height: 250px;
             }
+            
+            .marquee-text {
+                font-size: 0.9rem;
+            }
+            
+            .footer-links {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
         }
     </style>
 </head>
 <body>
     <header>
         <div class="header-content">
-            <div class="logo">
+            <div class="logo" onclick="goToHome()">
                 <span>🎬</span>
                 <span>DriveFlix</span>
             </div>
@@ -387,6 +520,34 @@
             <div class="movie-grid" id="moviesGrid"></div>
         </section>
     </main>
+
+    <!-- Beautiful Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="marquee-container">
+                <div class="marquee">
+                    <div class="marquee-text">🚀 <span>Developed by Shinto PC</span> | Copyright 2025 🎬</div>
+                    <div class="marquee-text">🌟 <span>DriveFlix</span> - Your Ultimate Movie Streaming Experience 🍿</div>
+                    <div class="marquee-text">🔥 <span>Streaming</span> Made Easy with Google Drive Integration 📽️</div>
+                </div>
+            </div>
+            
+            <div class="footer-links">
+                <a href="#" class="footer-link" onclick="goToHome()">🏠 Home</a>
+                <a href="#" class="footer-link">📞 Contact</a>
+                <a href="#" class="footer-link">📝 Privacy Policy</a>
+                <a href="#" class="footer-link">📄 Terms of Service</a>
+            </div>
+            
+            <div class="copyright">
+                © 2025 DriveFlix. All rights reserved. Made with ❤️ by Shinto PC
+            </div>
+        </div>
+        
+        <!-- Decorative elements -->
+        <div class="footer-decoration footer-decoration-1">🎬</div>
+        <div class="footer-decoration footer-decoration-2">🍿</div>
+    </footer>
 
     <div class="video-player-container" id="videoPlayerContainer">
         <div class="video-player">
@@ -419,6 +580,14 @@
         const installButton = document.getElementById('installButton');
         const favoritesSection = document.getElementById('favoritesSection');
         const recentlyPlayedSection = document.getElementById('recentlyPlayedSection');
+        
+        // Go to homepage function
+        function goToHome() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            searchInput.value = '';
+            genreFilter.value = '';
+            filterMovies();
+        }
         
         // Initialize the app
         document.addEventListener('DOMContentLoaded', init);
