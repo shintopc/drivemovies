@@ -591,8 +591,8 @@
             addToRecentlyPlayed(fileId);
             
             // Set video source
-            const videoUrl = `https://drive.google.com/uc?export=download&id=${fileId}`;
-            videoPlayer.src = videoUrl;
+            const videoUrl = `https://drive.google.com/uc?export=view&id=${fileId}`;
+                        videoPlayer.src = videoUrl;
             
             // Add subtitles if available
             if (subtitleUrl && isValidUrl(subtitleUrl)) {
