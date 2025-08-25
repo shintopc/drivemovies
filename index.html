@@ -106,6 +106,26 @@
             background-color: var(--card-background);
             color: var(--text-color);
             border: none;
+            min-width: 120px;
+        }
+
+        .movie-info-badges {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .movie-genre, .movie-language {
+            display: inline-block;
+            background-color: var(--accent-color);
+            padding: 0.25rem 0.5rem;
+            border-radius: 12px;
+            font-size: 0.8rem;
+        }
+
+        .movie-language {
+            background-color: #2d5a7a;
         }
 
         main {
@@ -170,15 +190,6 @@
             -webkit-box-orient: vertical;
             overflow: hidden;
             height: 64px;
-        }
-
-        .movie-genre {
-            display: inline-block;
-            background-color: var(--accent-color);
-            padding: 0.25rem 0.5rem;
-            border-radius: 12px;
-            font-size: 0.8rem;
-            margin-bottom: 1rem;
         }
 
         .movie-actions {
@@ -421,6 +432,16 @@
                 max-width: 100%;
             }
             
+            .filter-container {
+                width: 100%;
+                justify-content: center;
+            }
+            
+            .filter-select {
+                flex: 1;
+                min-width: unset;
+            }
+            
             .movie-grid {
                 grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
                 gap: 1rem;
@@ -483,6 +504,10 @@
                 flex-direction: column;
                 gap: 0.5rem;
             }
+            
+            .filter-container {
+                flex-direction: column;
+            }
         }
     </style>
 </head>
@@ -499,6 +524,9 @@
             <div class="filter-container">
                 <select class="filter-select" id="genreFilter">
                     <option value="">All Genres</option>
+                </select>
+                <select class="filter-select" id="languageFilter">
+                    <option value="">All Languages</option>
                 </select>
             </div>
         </div>
@@ -574,6 +602,7 @@
         const recentlyPlayedGrid = document.getElementById('recentlyPlayedGrid');
         const searchInput = document.getElementById('searchInput');
         const genreFilter = document.getElementById('genreFilter');
+        const languageFilter = document.getElementById('languageFilter');
         const videoPlayerContainer = document.getElementById('videoPlayerContainer');
         const videoFrame = document.getElementById('videoFrame');
         const closePlayer = document.getElementById('closePlayer');
@@ -586,6 +615,7 @@
             window.scrollTo({ top: 0, behavior: 'smooth' });
             searchInput.value = '';
             genreFilter.value = '';
+            languageFilter.value = '';
             filterMovies();
         }
         
@@ -616,13 +646,16 @@
                         ? movie.poster 
                         : 'https://via.placeholder.com/300x450/1e1e1e/ffffff?text=No+Poster',
                     // Ensure genre is always an array
-                    genre: movie.genre ? movie.genre.split(',').map(g => g.trim()) : []
+                    genre: movie.genre ? movie.genre.split(',').map(g => g.trim()) : [],
+                    // Ensure language is always an array
+                    language: movie.language ? movie.language.split(',').map(l => l.trim()) : []
                 }));
                 
                 filteredMovies = [...movies];
                 
                 renderMovies();
                 populateGenreFilter();
+                populateLanguageFilter();
             } catch (error) {
                 console.error('Error loading movies:', error);
                 moviesGrid.innerHTML = '<div class="empty-state">Error loading movies. Please try again later.</div>';
@@ -651,9 +684,13 @@
                     <img src="${movie.poster}" alt="${movie.title}" class="movie-poster" onerror="this.src='https://via.placeholder.com/300x450/1e1e1e/ffffff?text=No+Poster'">
                     <div class="movie-info">
                         <h3 class="movie-title">${movie.title}</h3>
+                        <div class="movie-info-badges">
+                            ${movie.genre && movie.genre.length > 0 ? 
+                                `<div class="movie-genre">${movie.genre[0]}</div>` : ''}
+                            ${movie.language && movie.language.length > 0 ? 
+                                `<div class="movie-language">${movie.language[0]}</div>` : ''}
+                        </div>
                         <p class="movie-description">${movie.description || 'No description available'}</p>
-                        ${movie.genre && movie.genre.length > 0 ? 
-                            `<div class="movie-genre">${movie.genre[0]}</div>` : ''}
                         <div class="movie-actions">
                             <button class="btn btn-play" onclick="playMovie('${movie.fileId}')">
                                 ▶ Play
@@ -687,9 +724,13 @@
                     <img src="${movie.poster}" alt="${movie.title}" class="movie-poster" onerror="this.src='https://via.placeholder.com/300x450/1e1e1e/ffffff?text=No+Poster'">
                     <div class="movie-info">
                         <h3 class="movie-title">${movie.title}</h3>
+                        <div class="movie-info-badges">
+                            ${movie.genre && movie.genre.length > 0 ? 
+                                `<div class="movie-genre">${movie.genre[0]}</div>` : ''}
+                            ${movie.language && movie.language.length > 0 ? 
+                                `<div class="movie-language">${movie.language[0]}</div>` : ''}
+                        </div>
                         <p class="movie-description">${movie.description || 'No description available'}</p>
-                        ${movie.genre && movie.genre.length > 0 ? 
-                            `<div class="movie-genre">${movie.genre[0]}</div>` : ''}
                         <div class="movie-actions">
                             <button class="btn btn-play" onclick="playMovie('${movie.fileId}')">
                                 ▶ Play
@@ -724,9 +765,13 @@
                     <img src="${movie.poster}" alt="${movie.title}" class="movie-poster" onerror="this.src='https://via.placeholder.com/300x450/1e1e1e/ffffff?text=No+Poster'">
                     <div class="movie-info">
                         <h3 class="movie-title">${movie.title}</h3>
+                        <div class="movie-info-badges">
+                            ${movie.genre && movie.genre.length > 0 ? 
+                                `<div class="movie-genre">${movie.genre[0]}</div>` : ''}
+                            ${movie.language && movie.language.length > 0 ? 
+                                `<div class="movie-language">${movie.language[0]}</div>` : ''}
+                        </div>
                         <p class="movie-description">${movie.description || 'No description available'}</p>
-                        ${movie.genre && movie.genre.length > 0 ? 
-                            `<div class="movie-genre">${movie.genre[0]}</div>` : ''}
                         <div class="movie-actions">
                             <button class="btn btn-play" onclick="playMovie('${movie.fileId}')">
                                 ▶ Play
@@ -757,6 +802,21 @@
                 option.value = genre;
                 option.textContent = genre;
                 genreFilter.appendChild(option);
+            });
+        }
+        
+        // Populate language filter dropdown
+        function populateLanguageFilter() {
+            // Get all unique languages
+            const allLanguages = movies.flatMap(movie => movie.language);
+            const uniqueLanguages = [...new Set(allLanguages)].filter(language => language);
+            
+            // Add options to select
+            uniqueLanguages.forEach(language => {
+                const option = document.createElement('option');
+                option.value = language;
+                option.textContent = language;
+                languageFilter.appendChild(option);
             });
         }
         
@@ -811,10 +871,11 @@
             renderRecentlyPlayed();
         }
         
-        // Filter movies based on search and genre
+        // Filter movies based on search, genre, and language
         function filterMovies() {
             const searchTerm = searchInput.value.toLowerCase();
             const selectedGenre = genreFilter.value;
+            const selectedLanguage = languageFilter.value;
             
             filteredMovies = movies.filter(movie => {
                 const matchesSearch = movie.title.toLowerCase().includes(searchTerm) || 
@@ -823,7 +884,10 @@
                 const matchesGenre = !selectedGenre || 
                                    (movie.genre && movie.genre.includes(selectedGenre));
                 
-                return matchesSearch && matchesGenre;
+                const matchesLanguage = !selectedLanguage || 
+                                      (movie.language && movie.language.includes(selectedLanguage));
+                
+                return matchesSearch && matchesGenre && matchesLanguage;
             });
             
             renderMovies();
@@ -833,6 +897,7 @@
         function setupEventListeners() {
             searchInput.addEventListener('input', filterMovies);
             genreFilter.addEventListener('change', filterMovies);
+            languageFilter.addEventListener('change', filterMovies);
             closePlayer.addEventListener('click', () => {
                 videoPlayerContainer.classList.remove('active');
                 videoFrame.src = '';
