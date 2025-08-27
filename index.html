@@ -636,11 +636,9 @@
             </div>
             <!-- New marquee below logo -->
 <div class="header-marquee-container">
-    <div class="header-marquee">
-        <div class="header-marquee-text">✨ <span>Newly Added Movies</span> — Check out the latest uploads 🚀</div>
-        <div class="header-marquee-text">🍿 Enjoy the freshest content on <span>DriveFlix</span></div>
-    </div>
+    <div class="header-marquee" id="headerMarquee"></div>
 </div>
+
             <div class="search-container">
                 <input type="text" class="search-input" placeholder="🔍 Search movies..." id="searchInput">
                 <button class="clear-search" id="clearSearch">×</button>
@@ -802,6 +800,29 @@
                 renderMovies();
                 populateGenreFilter();
                 populateLanguageFilter();
+                renderHeaderMarquee(); // NEW
+// Render header marquee with latest movies
+function renderHeaderMarquee() {
+    const headerMarquee = document.getElementById('headerMarquee');
+    if (!headerMarquee) return;
+
+    // Take last 5 movies (or fewer if less available)
+    const latestMovies = movies.slice(-5);
+
+    if (latestMovies.length === 0) {
+        headerMarquee.innerHTML = `<div class="header-marquee-text">🎬 No new movies yet. Stay tuned! 🍿</div>`;
+        return;
+    }
+
+    // Build marquee text items
+    headerMarquee.innerHTML = latestMovies.map(movie => `
+        <div class="header-marquee-text">✨ Newly Added: <span>${movie.title}</span></div>
+    `).join('');
+}
+
+
+
+                
             } catch (error) {
                 console.error('Error loading movies:', error);
                 moviesGrid.innerHTML = '<div class="empty-state">Error loading movies. Please try again later.</div>';
