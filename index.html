@@ -77,6 +77,7 @@
 
         .search-container {
             width: 100%;
+            position: relative;
         }
 
         .search-input {
@@ -88,6 +89,7 @@
             color: var(--text-color);
             font-size: 1rem;
             font-weight: 500;
+            padding-right: 3rem;
         }
 
         .search-input:focus {
@@ -98,6 +100,19 @@
 
         .search-input::placeholder {
             color: #888;
+        }
+
+        .clear-search {
+            position: absolute;
+            right: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: #888;
+            font-size: 1.2rem;
+            cursor: pointer;
+            display: none;
         }
 
         .filter-container {
@@ -120,6 +135,21 @@
             background-repeat: no-repeat;
             background-position: right 1rem center;
             background-size: 1rem;
+        }
+
+        /* Loading spinner */
+        .spinner {
+            width: 40px;
+            height: 40px;
+            margin: 2rem auto;
+            border: 4px solid rgba(255, 255, 255, 0.1);
+            border-left-color: var(--primary-color);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
         }
 
         /* Main Content */
@@ -152,6 +182,7 @@
             transition: var(--transition);
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
             border: 1px solid #2a2a2a;
+            position: relative;
         }
 
         .movie-card:active {
@@ -557,6 +588,7 @@
             </div>
             <div class="search-container">
                 <input type="text" class="search-input" placeholder="🔍 Search movies..." id="searchInput">
+                <button class="clear-search" id="clearSearch">×</button>
             </div>
             <div class="filter-container">
                 <select class="filter-select" id="genreFilter">
@@ -582,7 +614,9 @@
 
         <section>
             <h2 class="section-title">All Movies</h2>
-            <div class="movie-grid" id="moviesGrid"></div>
+            <div class="movie-grid" id="moviesGrid">
+                <div class="spinner"></div>
+            </div>
         </section>
     </main>
 
@@ -637,6 +671,7 @@
         const favoritesGrid = document.getElementById('favoritesGrid');
         const recentlyPlayedGrid = document.getElementById('recentlyPlayedGrid');
         const searchInput = document.getElementById('searchInput');
+        const clearSearch = document.getElementById('clearSearch');
         const genreFilter = document.getElementById('genreFilter');
         const languageFilter = document.getElementById('languageFilter');
         const videoPlayerContainer = document.getElementById('videoPlayerContainer');
@@ -650,6 +685,7 @@
         function goToHome() {
             window.scrollTo({ top: 0, behavior: 'smooth' });
             searchInput.value = '';
+            clearSearch.style.display = 'none';
             genreFilter.value = '';
             languageFilter.value = '';
             filterMovies();
@@ -664,14 +700,31 @@
             checkPWAInstallable();
             renderFavorites();
             renderRecentlyPlayed();
+            
+            // Register service worker
+            if ('serviceWorker' in navigator) {
+                window.addEventListener('load', () => {
+                    navigator.serviceWorker.register('/sw.js')
+                        .then((registration) => {
+                            console.log('SW registered: ', registration);
+                        })
+                        .catch((registrationError) => {
+                            console.log('SW registration failed: ', registrationError);
+                        });
+                });
+            }
         }
         
         // Fetch movies from Google Sheet
         async function loadMovies() {
             try {
-                moviesGrid.innerHTML = '<div class="empty-state">Loading movies...</div>';
+                moviesGrid.innerHTML = '<div class="spinner"></div>';
                 
                 const response = await fetch(GOOGLE_SHEET_URL);
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                
                 movies = await response.json();
                 
                 // Process movies data
@@ -741,8 +794,6 @@
                 </div>
             `).join('');
         }
-        
-        
         
         // Render favorite movies
         function renderFavorites() {
@@ -831,6 +882,11 @@
             const allGenres = movies.flatMap(movie => movie.genre);
             const uniqueGenres = [...new Set(allGenres)].filter(genre => genre);
             
+            // Clear existing options except the first one
+            while (genreFilter.options.length > 1) {
+                genreFilter.remove(1);
+            }
+            
             // Add options to select
             uniqueGenres.forEach(genre => {
                 const option = document.createElement('option');
@@ -845,6 +901,11 @@
             // Get all unique languages
             const allLanguages = movies.flatMap(movie => movie.language);
             const uniqueLanguages = [...new Set(allLanguages)].filter(language => language);
+            
+            // Clear existing options except the first one
+            while (languageFilter.options.length > 1) {
+                languageFilter.remove(1);
+            }
             
             // Add options to select
             uniqueLanguages.forEach(language => {
@@ -869,6 +930,9 @@
             
             // Show player
             videoPlayerContainer.classList.add('active');
+            
+            // Prevent body from scrolling when video player is open
+            document.body.style.overflow = 'hidden';
         }
         
         // Add movie to recently played
@@ -930,12 +994,24 @@
         
         // Setup event listeners
         function setupEventListeners() {
-            searchInput.addEventListener('input', filterMovies);
+            searchInput.addEventListener('input', () => {
+                clearSearch.style.display = searchInput.value ? 'block' : 'none';
+                filterMovies();
+            });
+            
+            clearSearch.addEventListener('click', () => {
+                searchInput.value = '';
+                clearSearch.style.display = 'none';
+                filterMovies();
+            });
+            
             genreFilter.addEventListener('change', filterMovies);
             languageFilter.addEventListener('change', filterMovies);
+            
             closePlayer.addEventListener('click', () => {
                 videoPlayerContainer.classList.remove('active');
                 videoFrame.src = '';
+                document.body.style.overflow = 'auto';
             });
             
             // Close video player when clicking outside
@@ -943,6 +1019,16 @@
                 if (e.target === videoPlayerContainer) {
                     videoPlayerContainer.classList.remove('active');
                     videoFrame.src = '';
+                    document.body.style.overflow = 'auto';
+                }
+            });
+            
+            // Close video player with Escape key
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape' && videoPlayerContainer.classList.contains('active')) {
+                    videoPlayerContainer.classList.remove('active');
+                    videoFrame.src = '';
+                    document.body.style.overflow = 'auto';
                 }
             });
             
@@ -952,7 +1038,7 @@
             window.addEventListener('beforeinstallprompt', (e) => {
                 e.preventDefault();
                 deferredPrompt = e;
-                installButton.style.display = 'block';
+                installButton.style.display = 'flex';
             });
             
             installButton.addEventListener('click', async () => {
