@@ -577,6 +577,54 @@
                 padding-right: max(1rem, env(safe-area-inset-right));
             }
         }
+
+
+/* Header Marquee Styles */
+.header-marquee-container {
+    overflow: hidden;
+    position: relative;
+    background: linear-gradient(90deg, transparent, rgba(229, 9, 20, 0.15), transparent);
+    padding: 0.5rem 0;
+    margin-top: -0.3rem;
+    border-radius: var(--border-radius);
+}
+
+.header-marquee {
+    display: flex;
+    animation: header-marquee-scroll 20s linear infinite;
+    white-space: nowrap;
+}
+
+.header-marquee-text {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--secondary-color);
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.4);
+    padding: 0 1.2rem;
+}
+
+.header-marquee-text span {
+    color: var(--primary-color);
+    font-weight: 700;
+}
+
+/* Animation */
+@keyframes header-marquee-scroll {
+    0% {
+        transform: translateX(100%);
+    }
+    100% {
+        transform: translateX(-100%);
+    }
+}
+
+/* Pause animation on tap/hover */
+.header-marquee-container:active .header-marquee {
+    animation-play-state: paused;
+}
+
+
+        
     </style>
 </head>
 <body>
@@ -587,10 +635,10 @@
                 <span>DriveFlix</span>
             </div>
             <!-- New marquee below logo -->
-<div class="marquee-container" style="margin-top:-0.5rem;">
-    <div class="marquee">
-        <div class="marquee-text">✨ <span>Newly Added Movies</span> — Check out the latest uploads 🚀</div>
-        <div class="marquee-text">🍿 Watch the freshest content on <span>DriveFlix</span></div>
+<div class="header-marquee-container">
+    <div class="header-marquee">
+        <div class="header-marquee-text">✨ <span>Newly Added Movies</span> — Check out the latest uploads 🚀</div>
+        <div class="header-marquee-text">🍿 Enjoy the freshest content on <span>DriveFlix</span></div>
     </div>
 </div>
             <div class="search-container">
