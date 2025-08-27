@@ -584,7 +584,7 @@
     overflow: hidden;
     position: relative;
     background: linear-gradient(90deg, transparent, rgba(229, 9, 20, 0.15), transparent);
-    padding: 0.5rem 0;
+    padding: 0.15rem 0; /* Slimmer height */
     margin-top: -0.3rem;
     border-radius: var(--border-radius);
 }
@@ -596,11 +596,11 @@
 }
 
 .header-marquee-text {
-    font-size: 0.85rem;
+    font-size: 0.75rem; /* Smaller text */
     font-weight: 600;
     color: var(--secondary-color);
     text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.4);
-    padding: 0 1.2rem;
+    padding: 0 0.8rem; /* Tighter spacing */
 }
 
 .header-marquee-text span {
@@ -801,7 +801,15 @@
                 populateGenreFilter();
                 populateLanguageFilter();
                 renderHeaderMarquee(); // NEW
-// Render header marquee with latest movies
+
+                
+            } catch (error) {
+                console.error('Error loading movies:', error);
+                moviesGrid.innerHTML = '<div class="empty-state">Error loading movies. Please try again later.</div>';
+            }
+        }
+        
+        // Render header marquee with latest movies
 function renderHeaderMarquee() {
     const headerMarquee = document.getElementById('headerMarquee');
     if (!headerMarquee) return;
@@ -822,14 +830,7 @@ function renderHeaderMarquee() {
 
 
 
-                
-            } catch (error) {
-                console.error('Error loading movies:', error);
-                moviesGrid.innerHTML = '<div class="empty-state">Error loading movies. Please try again later.</div>';
-            }
-        }
-        
-        // Check if a string is a valid URL
+// Check if a string is a valid URL
         function isValidUrl(string) {
             try {
                 new URL(string);
