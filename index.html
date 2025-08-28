@@ -580,19 +580,13 @@
 
 
 /* Header Marquee Styles */
-/* Header Marquee Styles - Blue Gradient Version */
-/* Header Marquee Styles - Light Blue Version */
 .header-marquee-container {
     overflow: hidden;
     position: relative;
-    background: linear-gradient(90deg, 
-        rgba(224, 247, 250, 0.3) 0%, 
-        rgba(178, 235, 242, 0.6) 50%, 
-        rgba(224, 247, 250, 0.3) 100%);
-    padding: 0.15rem 0;
+    background: linear-gradient(90deg, transparent, rgba(229, 9, 20, 0.15), transparent);
+    padding: 0.15rem 0; /* Slimmer height */
     margin-top: -0.3rem;
     border-radius: var(--border-radius);
-    border: 1px solid rgba(129, 212, 250, 0.4);
 }
 
 .header-marquee {
@@ -602,15 +596,15 @@
 }
 
 .header-marquee-text {
-    font-size: 0.75rem;
+    font-size: 0.75rem; /* Smaller text */
     font-weight: 600;
-    color: #01579b;
-    text-shadow: 0.5px 0.5px 1px rgba(255, 255, 255, 0.7);
-    padding: 0 0.8rem;
+    color: var(--secondary-color);
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.4);
+    padding: 0 0.8rem; /* Tighter spacing */
 }
 
 .header-marquee-text span {
-    color: #0288d1;
+    color: var(--primary-color);
     font-weight: 700;
 }
 
@@ -628,6 +622,7 @@
 .header-marquee-container:active .header-marquee {
     animation-play-state: paused;
 }
+
         
     </style>
 </head>
