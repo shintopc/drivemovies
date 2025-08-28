@@ -1,4 +1,4 @@
-const CACHE_NAME = 'driveflix-v2';
+const CACHE_NAME = 'driveflix-v3';
 const urlsToCache = [
   '/circular_menu_button.png',
   '/',
