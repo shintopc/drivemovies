@@ -1,5 +1,6 @@
 const CACHE_NAME = 'driveflix-v2';
 const urlsToCache = [
+  '/circular_menu_button.png',
   '/',
   '/index.html',
   '/manifest.json',
