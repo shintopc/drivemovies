@@ -399,6 +399,23 @@
     object-fit: cover;
     border-radius: 50%;
 }
+.install-label {
+    position: fixed;
+    bottom: 60px; /* just below button (button is 60px tall + 30px offset above bottom) */
+    right: 20px;
+    font-size: 0.75rem;
+    color: #fff;
+    text-align: center;
+    width: 60px; /* same width as button */
+    z-index: 999;
+    display: none; /* hidden until install-btn is shown */
+}
+
+/* Show label only when install button is visible */
+.install-btn[style*="display: flex"] ~ .install-label,
+.install-btn[style*="display: block"] ~ .install-label {
+    display: block;
+}
 
 
         /* Footer Styles */
@@ -718,6 +735,8 @@
 </div>
 </div>
 <button class="install-btn" id="installButton"><img alt="Install" class="install-icon" src="circular_menu_button.png"/></button>
+<span class="install-label">Install</span>
+        
 <script>
         // Your opensheet URL
 const GOOGLE_SHEET_URL = 'https://opensheet.elk.sh/1vOt2lrRXqEnX8m9AclIAtBP67Wwn7kLqj0htmjVQWEw/movies';
