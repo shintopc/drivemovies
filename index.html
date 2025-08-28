@@ -584,7 +584,7 @@
     overflow: hidden;
     position: relative;
     background: linear-gradient(90deg, transparent, rgba(229, 9, 20, 0.15), transparent);
-    padding: 0.15rem 0; /* Slimmer height */
+    padding: 0.5rem 0;
     margin-top: -0.3rem;
     border-radius: var(--border-radius);
 }
@@ -596,11 +596,11 @@
 }
 
 .header-marquee-text {
-    font-size: 0.75rem; /* Smaller text */
+    font-size: 0.85rem;
     font-weight: 600;
     color: var(--secondary-color);
     text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.4);
-    padding: 0 0.8rem; /* Tighter spacing */
+    padding: 0 1.2rem;
 }
 
 .header-marquee-text span {
@@ -802,26 +802,6 @@
                 populateLanguageFilter();
                 renderHeaderMarquee(); // NEW
 
-                
-            } catch (error) {
-                console.error('Error loading movies:', error);
-                moviesGrid.innerHTML = '<div class="empty-state">Error loading movies. Please try again later.</div>';
-            }
-        }
-        
-        // Render header marquee with latest movies
-function renderHeaderMarquee() {
-    const headerMarquee = document.getElementById('headerMarquee');
-    if (!headerMarquee) return;
-
-    // Take last 5 movies (or fewer if less available)
-    const latestMovies = movies.slice(-5);
-
-    if (latestMovies.length === 0) {
-        headerMarquee.innerHTML = `<div class="header-marquee-text">🎬 No new movies yet. Stay tuned! 🍿</div>`;
-        return;
-    }
-
     // Build marquee text items
     headerMarquee.innerHTML = latestMovies.map(movie => `
         <div class="header-marquee-text">✨ Newly Added: <span>${movie.title}</span></div>
@@ -829,6 +809,36 @@ function renderHeaderMarquee() {
 }
 
 
+
+                
+            } catch (error) {
+                console.error('Error loading movies:', error);
+                moviesGrid.innerHTML = '<div class="empty-state">Error loading movies. Please try again later.</div>';
+            }
+        }
+        
+        
+function renderHeaderMarquee() {
+    const headerMarquee = document.getElementById('headerMarquee');
+    if (!headerMarquee) return;
+
+    // Always include a welcome message first
+    let marqueeItems = [`<div class="header-marquee-text">👋 Welcome to <span>DriveFlix</span></div>`];
+
+    // Take last 3 movies from the sheet
+    const latestMovies = movies.slice(-3);
+
+    if (latestMovies.length === 0) {
+        marqueeItems.push(`<div class="header-marquee-text">🎬 No movies yet. Stay tuned! 🍿</div>`);
+    } else {
+        // Add each movie title (just the title, no 'Newly Added' repeated)
+        latestMovies.forEach(movie => {
+            marqueeItems.push(`<div class="header-marquee-text"><span>${movie.title}</span></div>`);
+        });
+    }
+
+    headerMarquee.innerHTML = marqueeItems.join('');
+}
 
 // Check if a string is a valid URL
         function isValidUrl(string) {
