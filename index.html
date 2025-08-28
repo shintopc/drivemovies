@@ -580,32 +580,58 @@
 
 
 /* Header Marquee Styles */
+/* Header Marquee Styles - Blue Gradient Version */
 .header-marquee-container {
     overflow: hidden;
     position: relative;
-    background: linear-gradient(90deg, transparent, rgba(229, 9, 20, 0.15), transparent);
-    padding: 0.15rem 0; /* Slimmer height */
-    margin-top: -0.3rem;
-    border-radius: var(--border-radius);
+    background: linear-gradient(90deg, 
+        rgba(30, 136, 229, 0.1) 0%, 
+        rgba(66, 165, 245, 0.3) 50%, 
+        rgba(30, 136, 229, 0.1) 100%);
+    padding: 0.5rem 0;
+    margin: 10px 0;
+    border-radius: 12px;
+    border: 1px solid rgba(100, 181, 246, 0.3);
+    box-shadow: 0 4px 15px rgba(21, 101, 192, 0.3),
+                inset 0 0 20px rgba(187, 222, 251, 0.2);
 }
 
 .header-marquee {
     display: flex;
-    animation: header-marquee-scroll 20s linear infinite;
+    animation: header-marquee-scroll 25s linear infinite;
     white-space: nowrap;
 }
 
 .header-marquee-text {
-    font-size: 0.75rem; /* Smaller text */
+    font-size: 0.85rem;
     font-weight: 600;
-    color: var(--secondary-color);
-    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.4);
-    padding: 0 0.8rem; /* Tighter spacing */
+    color: #e3f2fd;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+    padding: 0 1.2rem;
+    display: flex;
+    align-items: center;
 }
 
 .header-marquee-text span {
-    color: var(--primary-color);
+    color: #bbdefb;
     font-weight: 700;
+    margin-left: 5px;
+    text-shadow: 0 0 8px rgba(187, 222, 251, 0.7);
+}
+
+/* Add movie clapperboard icon before welcome text */
+.header-marquee-text:first-child::before {
+    content: "🎬";
+    margin-right: 8px;
+    filter: drop-shadow(0 0 2px rgba(255, 255, 255, 0.5));
+}
+
+/* Add star icon before movie titles */
+.header-marquee-text:not(:first-child)::before {
+    content: "⭐";
+    margin-right: 8px;
+    font-size: 0.7rem;
+    filter: drop-shadow(0 0 2px rgba(255, 215, 0, 0.7));
 }
 
 /* Animation */
@@ -618,12 +644,17 @@
     }
 }
 
-/* Pause animation on tap/hover */
-.header-marquee-container:active .header-marquee {
+/* Pause animation on hover */
+.header-marquee-container:hover .header-marquee {
     animation-play-state: paused;
+    cursor: pointer;
 }
 
-
+/* Add subtle glow effect on hover */
+.header-marquee-container:hover {
+    box-shadow: 0 4px 20px rgba(21, 101, 192, 0.5),
+                inset 0 0 25px rgba(187, 222, 251, 0.3);
+}
         
     </style>
 </head>
