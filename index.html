@@ -1,30 +1,27 @@
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
-     <meta charset="UTF-8">
-    <!-- This viewport tag is CRITICAL for mobile responsiveness - DO NOT REMOVE -->
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>DriveFlix - Google Drive Movie Streamer</title>
-    <meta name="description" content="Stream movies from Google Drive">
-    <meta name="theme-color" content="#121212">
-    
-    <!-- PWA Manifest -->
-    <link rel="manifest" href="manifest.json">
-    
-    <!-- Favicon -->
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎬</text></svg>">
-    
-    <!-- Apple specific meta tags for better iOS experience -->
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="DriveFlix">
-    <link rel="apple-touch-icon" href="https://via.placeholder.com/180x180/121212/e50914?text=DF">
-    
-    <!-- Theme color for different browsers -->
-    <meta name="theme-color" content="#e50914" media="(prefers-color-scheme: light)">
-    <meta name="theme-color" content="#121212" media="(prefers-color-scheme: dark)">
-    <meta name="msapplication-TileColor" content="#e50914">
-    <style>
+<meta charset="utf-8"/>
+<!-- This viewport tag is CRITICAL for mobile responsiveness - DO NOT REMOVE -->
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport"/>
+<title>DriveFlix - Google Drive Movie Streamer</title>
+<meta content="Stream movies from Google Drive" name="description"/>
+<meta content="#121212" name="theme-color"/>
+<!-- PWA Manifest -->
+<link href="manifest.json" rel="manifest"/>
+<!-- Favicon -->
+<link href="data:image/svg+xml,&lt;svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22&gt;&lt;text y=%22.9em%22 font-size=%2290%22&gt;🎬&lt;/text&gt;&lt;/svg&gt;" rel="icon"/>
+<!-- Apple specific meta tags for better iOS experience -->
+<meta content="yes" name="apple-mobile-web-app-capable"/>
+<meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"/>
+<meta content="DriveFlix" name="apple-mobile-web-app-title"/>
+<link href="https://via.placeholder.com/180x180/121212/e50914?text=DF" rel="apple-touch-icon"/>
+<!-- Theme color for different browsers -->
+<meta content="#e50914" media="(prefers-color-scheme: light)" name="theme-color"/>
+<meta content="#121212" media="(prefers-color-scheme: dark)" name="theme-color"/>
+<meta content="#e50914" name="msapplication-TileColor"/>
+<style>
         :root {
             --primary-color: #e50914;
             --secondary-color: #f5f5f5;
@@ -377,24 +374,32 @@
         }
 
         /* Install Button */
-        .install-btn {
-            position: fixed;
-            bottom: 90px;
-            right: 20px;
-            background: linear-gradient(135deg, var(--primary-color), #f40612);
-            color: white;
-            border: none;
-            border-radius: 50%;
-            width: 60px;
-            height: 60px;
-            font-size: 1.5rem;
-            cursor: pointer;
-            box-shadow: 0 4px 20px rgba(229, 9, 20, 0.4);
-            z-index: 999;
-            display: none;
-            align-items: center;
-            justify-content: center;
-        }
+        
+.install-btn {
+    position: fixed;
+    bottom: 90px;
+    right: 20px;
+    background: none;
+    border: none;
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    cursor: pointer;
+    box-shadow: 0 4px 20px rgba(229, 9, 20, 0.4);
+    z-index: 999;
+    display: none;
+    padding: 0;
+    align-items: center;
+    justify-content: center;
+}
+
+.install-btn img.install-icon {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+}
+
 
         /* Footer Styles */
         footer {
@@ -643,93 +648,77 @@
     </style>
 </head>
 <body>
-    <header>
-        <div class="header-content">
-            <div class="logo" onclick="goToHome()">
-                <span>🎬</span>
-                <span>DriveFlix</span>
-                 <span>📣</span>
-            </div>
-            <!-- New marquee below logo -->
-<div class="header-marquee-container">
-    <div class="header-marquee" id="headerMarquee"></div>
+<header>
+<div class="header-content">
+<div class="logo" onclick="goToHome()">
+<span>🎬</span>
+<span>DriveFlix</span>
+<span>📣</span>
 </div>
-
-            <div class="search-container">
-                <input type="text" class="search-input" placeholder="🔍 Search movies..." id="searchInput">
-                <button class="clear-search" id="clearSearch">×</button>
-            </div>
-            <div class="filter-container">
-                <select class="filter-select" id="genreFilter">
-                    <option value="">All Genres</option>
-                </select>
-                <select class="filter-select" id="languageFilter">
-                    <option value="">All Languages</option>
-                </select>
-            </div>
-        </div>
-    </header>
-
-    <main>
-        <section id="recentlyPlayedSection" style="display: none;">
-            <h2 class="section-title">Recently Played</h2>
-            <div class="movie-grid" id="recentlyPlayedGrid"></div>
-        </section>
-
-        <section id="favoritesSection" style="display: none;">
-            <h2 class="section-title">Favorites</h2>
-            <div class="movie-grid" id="favoritesGrid"></div>
-        </section>
-
-        <section>
-            <h2 class="section-title">All Movies</h2>
-            <div class="movie-grid" id="moviesGrid">
-                <div class="spinner"></div>
-            </div>
-        </section>
-    </main>
-
-    <!-- Beautiful Footer -->
-    <footer>
-        <div class="footer-content">
-            <div class="marquee-container">
-                <div class="marquee">
-                    <div class="marquee-text">🚀 <span>Developed by </span> 👑😈Shinto PC😈👑</span> | Copyright 2025 🎬</div>
-                    <div class="marquee-text">🌟 <span>DriveFlix</span> - Your Ultimate Movie Streaming Experience 🍵</div>
-                     </div>
-            </div>
-            
-            <div class="footer-links">
-                <a href="https://drivemovies-gamma.vercel.app/" class="footer-link" onclick="goToHome(); return false;">🏠 Home</a>
-                <a href="https://wa.me/919961583051" class="footer-link">📞 Contact</a>
-                <a href="https://stream-sooty-three.vercel.app/" class="footer-link">📝 Other Apps</a>
-                </div>
-            
-            <div class="copyright">
+<!-- New marquee below logo -->
+<div class="header-marquee-container">
+<div class="header-marquee" id="headerMarquee"></div>
+</div>
+<div class="search-container">
+<input class="search-input" id="searchInput" placeholder="🔍 Search movies..." type="text"/>
+<button class="clear-search" id="clearSearch">×</button>
+</div>
+<div class="filter-container">
+<select class="filter-select" id="genreFilter">
+<option value="">All Genres</option>
+</select>
+<select class="filter-select" id="languageFilter">
+<option value="">All Languages</option>
+</select>
+</div>
+</div>
+</header>
+<main>
+<section id="recentlyPlayedSection" style="display: none;">
+<h2 class="section-title">Recently Played</h2>
+<div class="movie-grid" id="recentlyPlayedGrid"></div>
+</section>
+<section id="favoritesSection" style="display: none;">
+<h2 class="section-title">Favorites</h2>
+<div class="movie-grid" id="favoritesGrid"></div>
+</section>
+<section>
+<h2 class="section-title">All Movies</h2>
+<div class="movie-grid" id="moviesGrid">
+<div class="spinner"></div>
+</div>
+</section>
+</main>
+<!-- Beautiful Footer -->
+<footer>
+<div class="footer-content">
+<div class="marquee-container">
+<div class="marquee">
+<div class="marquee-text">🚀 <span>Developed by </span> 👑😈Shinto PC😈👑 | Copyright 2025 🎬</div>
+<div class="marquee-text">🌟 <span>DriveFlix</span> - Your Ultimate Movie Streaming Experience 🍵</div>
+</div>
+</div>
+<div class="footer-links">
+<a class="footer-link" href="https://drivemovies-gamma.vercel.app/" onclick="goToHome(); return false;">🏠 Home</a>
+<a class="footer-link" href="https://wa.me/919961583051">📞 Contact</a>
+<a class="footer-link" href="https://stream-sooty-three.vercel.app/">📝 Other Apps</a>
+</div>
+<div class="copyright">
                 Made with ❤️ by Shinto PC | Copyright © 2025 
             </div>
-        </div>
-        
-        <!-- Decorative elements -->
-        <div class="footer-decoration footer-decoration-1">🎬</div>
-        <div class="footer-decoration footer-decoration-2">🍰🍦</div>
-    </footer>
-
-    <div class="video-player-container" id="videoPlayerContainer">
-        <div class="video-player">
-            <button class="close-player" id="closePlayer">×</button>
-            <iframe 
-    id="videoFrame" 
-    allowfullscreen 
-    allow="fullscreen; accelerometer; gyroscope; autoplay; encrypted-media;"
-></iframe>
-
-        </div>
-    </div>
-
-    <button class="install-btn" id="installButton">+</button>
-
-    <script>
+</div>
+<!-- Decorative elements -->
+<div class="footer-decoration footer-decoration-1">🎬</div>
+<div class="footer-decoration footer-decoration-2">🍰🍦</div>
+</footer>
+<div class="video-player-container" id="videoPlayerContainer">
+<div class="video-player">
+<button class="close-player" id="closePlayer">×</button>
+<iframe allow="fullscreen; accelerometer; gyroscope; autoplay; encrypted-media;" allowfullscreen="" id="videoFrame"></iframe>
+</div>
+</div>
+<button class="install-btn" id="installButton"><img alt="Install" class="install-icon" src="circular_menu_button.png"/></button>
+<script>
         // Your opensheet URL
 const GOOGLE_SHEET_URL = 'https://opensheet.elk.sh/1vOt2lrRXqEnX8m9AclIAtBP67Wwn7kLqj0htmjVQWEw/movies';
 
