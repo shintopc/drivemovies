@@ -159,7 +159,8 @@ main {
 
 .movie-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    /* CHANGED: Replaced auto-fit with auto-fill to prevent single items from stretching */
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
     gap: 1rem;
     margin-bottom: 2rem;
 }
@@ -514,7 +515,7 @@ footer {
     }
     
     .movie-grid {
-        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+        grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
         gap: 1.5rem;
     }
     
@@ -526,7 +527,7 @@ footer {
 /* Very small devices */
 @media (max-width: 360px) {
     .movie-grid {
-        grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+        grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
     }
     
     .movie-poster {
@@ -550,7 +551,7 @@ footer {
 /* Landscape orientation */
 @media (max-height: 500px) and (orientation: landscape) {
     .movie-grid {
-        grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+        grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
     }
     
     .movie-poster {
@@ -634,16 +635,13 @@ footer {
 .header-marquee-container:active .header-marquee {
     animation-play-state: paused;
 }
-/* === Add these new styles to the end of your style.css file === */
-
-/* === Replace the existing webseries styles at the end of your style.css file with this updated version === */
 
 /* Webseries Grid Styles */
 .webseries-grid {
     display: grid;
-    /* CHANGED: Adjusted minmax from 280px to 150px to match movie-grid */
-    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-    gap: 1rem; /* CHANGED: Adjusted gap to match movie-grid */
+    /* CHANGED: Replaced auto-fit with auto-fill to prevent single items from stretching */
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 1rem;
     margin-bottom: 2rem;
 }
 
@@ -659,7 +657,6 @@ footer {
 
 .webseries-poster {
     width: 100%;
-    /* CHANGED: Adjusted height to match movie-poster */
     height: 200px;
     object-fit: cover;
     display: block;
@@ -673,7 +670,6 @@ footer {
 }
 
 .webseries-title {
-    /* CHANGED: Matched styles with .movie-title */
     font-size: 0.95rem;
     font-weight: 600;
     margin-bottom: 0.5rem;
@@ -691,7 +687,6 @@ footer {
     line-height: 1.4;
     margin-bottom: 1rem;
     flex-grow: 1;
-    /* ADDED: Truncate description to prevent card stretching */
     display: -webkit-box;
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
@@ -719,14 +714,14 @@ footer {
     color: var(--secondary-color);
     background-color: #2a2a2a;
     transition: var(--transition);
-    list-style: none; /* Hide the default marker */
+    list-style: none;
     display: flex;
     justify-content: space-between;
     align-items: center;
 }
 
 .season-header::-webkit-details-marker {
-    display: none; /* Hide marker for Chrome/Safari */
+    display: none;
 }
 
 .season-header:hover {
@@ -784,10 +779,9 @@ footer {
     transform: scale(0.9);
 }
 
-/* CHANGED: Adjusted media query to match movie section for consistency */
 @media (min-width: 768px) {
     .webseries-grid {
-        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+        grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
         gap: 1.5rem;
     }
     .webseries-poster {
