@@ -1,4 +1,4 @@
-const CACHE_NAME = 'driveflix-v6'; // Version bumped to ensure update
+const CACHE_NAME = 'driveflix-v8'; // Version bumped to ensure update
 const urlsToCache = [
   '/',
   '/index.html',
@@ -69,4 +69,5 @@ self.addEventListener('fetch', (event) => {
         });
       })
   );
+
 });
