@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport"/>
+    <title>DriveFlix - Google Drive Movie Streamer</title>
+    <meta content="Stream movies from Google Drive" name="description"/>
+    <meta content="#121212" name="theme-color"/>
+    <link href="manifest.json" rel="manifest"/>
+    <link href="data:image/svg+xml,&lt;svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22&gt;&lt;text y=%22.9em%22 font-size=%2290%22&gt;🎬&lt;/text&gt;&lt;/svg&gt;" rel="icon"/>
+    <meta content="yes" name="apple-mobile-web-app-capable"/>
+    <meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"/>
+    <meta content="DriveFlix" name="apple-mobile-web-app-title"/>
+    <link href="https://via.placeholder.com/180x180/121212/e50914?text=DF" rel="apple-touch-icon"/>
+    <meta content="#e50914" media="(prefers-color-scheme: light)" name="theme-color"/>
+    <meta content="#121212" media="(prefers-color-scheme: dark)" name="theme-color"/>
+    <meta content="#e50914" name="msapplication-TileColor"/>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <div class="logo" onclick="goToHome()">
+                <span>🎬</span>
+                <span>DriveFlix</span>
+                <span>📣</span>
+            </div>
+            <div class="header-marquee-container">
+                <div class="header-marquee" id="headerMarquee"></div>
+            </div>
+            <div class="search-container">
+                <input class="search-input" id="searchInput" placeholder="🔍 Search movies..." type="text"/>
+                <button class="clear-search" id="clearSearch">×</button>
+            </div>
+            <div class="filter-container">
+                <select class="filter-select" id="genreFilter">
+                    <option value="">All Genres</option>
+                </select>
+                <select class="filter-select" id="languageFilter">
+                    <option value="">All Languages</option>
+                </select>
+            </div>
+        </div>
+    </header>
+    <main>
+        <section id="recentlyPlayedSection" style="display: none;">
+            <h2 class="section-title">Recently Played</h2>
+            <div class="movie-grid" id="recentlyPlayedGrid"></div>
+        </section>
+        <section id="favoritesSection" style="display: none;">
+            <h2 class="section-title">Favorites</h2>
+            <div class="movie-grid" id="favoritesGrid"></div>
+        </section>
+        <section>
+            <h2 class="section-title">All Movies</h2>
+            <div class="movie-grid" id="moviesGrid">
+                <div class="spinner"></div>
+            </div>
+        </section>
+        <section id="webseriesSection">
+            <h2 class="section-title">Webseries</h2>
+            <div class="webseries-grid" id="webseriesGrid">
+                <div class="spinner"></div>
+            </div>
+        </section>
+    </main>
+    <footer>
+        <div class="footer-content">
+            <div class="marquee-container">
+                <div class="marquee">
+                    <div class="marquee-text">🚀 <span>Developed by </span> 👑😈Shinto PC😈👑 | Copyright 2025 🎬</div>
+                    <div class="marquee-text">🌟 <span>DriveFlix</span> - Your Ultimate Movie Streaming Experience 🍵</div>
+                </div>
+            </div>
+            <div class="footer-links">
+                <a class="footer-link" href="https://drivemovies-gamma.vercel.app/" onclick="goToHome(); return false;">🏠 Home</a>
+                <a class="footer-link" href="https://wa.me/919961583051">📞 Contact</a>
+                <a class="footer-link" href="https://stream-sooty-three.vercel.app/">📝 Other Apps</a>
+            </div>
+            <div class="copyright">
+                Made with ❤️ by Shinto PC | Copyright © 2025 
+            </div>
+        </div>
+        <div class="footer-decoration footer-decoration-1">🎬</div>
+        <div class="footer-decoration footer-decoration-2" onclick="window.open('https://colab.research.google.com/drive/16KzQcMD3ILI7MEnxB0ljDe3bMteyAH2n', '_blank')">
+            🍰🍦
+        </div>
+    </footer>
+    <div class="video-player-container" id="videoPlayerContainer">
+        <div class="video-player">
+            <button class="close-player" id="closePlayer">×</button>
+            <iframe allow="fullscreen; accelerometer; gyroscope; autoplay; encrypted-media;" allowfullscreen="" id="videoFrame"></iframe>
+        </div>
+    </div>
+    <button class="install-btn" id="installButton"><img alt="Install" class="install-icon" src="images/circular_menu_button.jpg"/></button>
+    <span class="install-label">Install App</span>
+        
+    <script src="js/script.js"></script>
+</body>
+</html>
