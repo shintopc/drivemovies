@@ -636,11 +636,14 @@ footer {
 }
 /* === Add these new styles to the end of your style.css file === */
 
+/* === Replace the existing webseries styles at the end of your style.css file with this updated version === */
+
 /* Webseries Grid Styles */
 .webseries-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 1.5rem;
+    /* CHANGED: Adjusted minmax from 280px to 150px to match movie-grid */
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 1rem; /* CHANGED: Adjusted gap to match movie-grid */
     margin-bottom: 2rem;
 }
 
@@ -656,7 +659,8 @@ footer {
 
 .webseries-poster {
     width: 100%;
-    height: 180px;
+    /* CHANGED: Adjusted height to match movie-poster */
+    height: 200px;
     object-fit: cover;
     display: block;
 }
@@ -669,9 +673,16 @@ footer {
 }
 
 .webseries-title {
-    font-size: 1.1rem;
+    /* CHANGED: Matched styles with .movie-title */
+    font-size: 0.95rem;
     font-weight: 600;
     margin-bottom: 0.5rem;
+    line-height: 1.3;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    height: 2.6rem;
 }
 
 .webseries-description {
@@ -680,6 +691,12 @@ footer {
     line-height: 1.4;
     margin-bottom: 1rem;
     flex-grow: 1;
+    /* ADDED: Truncate description to prevent card stretching */
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    height: 2.2rem;
 }
 
 /* Season Accordion Styles */
@@ -767,8 +784,13 @@ footer {
     transform: scale(0.9);
 }
 
+/* CHANGED: Adjusted media query to match movie section for consistency */
 @media (min-width: 768px) {
     .webseries-grid {
-        grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+        gap: 1.5rem;
+    }
+    .webseries-poster {
+        height: 250px;
     }
 }
